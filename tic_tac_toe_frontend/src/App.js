@@ -13,6 +13,13 @@ import './index.css';
  * text: #111827
  */
 
+// Map internal values to display icons (using Unicode chess glyphs)
+// Knight (♞) for Player 1 and Queen (♛) for Player 2 keeps it lightweight and theme-friendly.
+const ICONS = {
+  X: '♞', // chess knight
+  O: '♛', // chess queen
+};
+
 // Utility to calculate winner and winning line
 function calculateWinner(squares) {
   const lines = [
@@ -34,14 +41,25 @@ function calculateWinner(squares) {
 }
 
 function Square({ value, onClick, highlight }) {
+  const isPlayerX = value === 'X';
+  const isPlayerO = value === 'O';
+
+  // Accessible label: describe the piece instead of the raw character
+  const aria = value
+    ? `Square with ${isPlayerX ? 'player knight' : 'player queen'}`
+    : 'Square empty';
+
   return (
     <button
-      className="ttt-square"
+      className={`ttt-square ${isPlayerX ? 'x-icon' : ''} ${isPlayerO ? 'o-icon' : ''}`}
       onClick={onClick}
-      aria-label={`Square ${value ? value : 'empty'}`}
+      aria-label={aria}
       data-highlight={highlight ? 'true' : 'false'}
     >
-      {value}
+      {/* Render chess icons instead of letters */}
+      <span className="ttt-square-icon" aria-hidden="true">
+        {value ? ICONS[value] : ''}
+      </span>
     </button>
   );
 }
@@ -95,6 +113,7 @@ function App() {
   const isBoardFull = useMemo(() => squares.every((s) => s !== null), [squares]);
   const isDraw = !winner && isBoardFull;
 
+  // Keep internal state as 'X' or 'O' but present chess icons in UI
   const currentPlayer = xIsNext ? 'X' : 'O';
 
   // PUBLIC_INTERFACE
@@ -129,12 +148,12 @@ function App() {
 
   const statusMessage = useMemo(() => {
     if (winner) {
-      return `Player ${winner} wins!`;
+      return `Player ${winner === 'X' ? 'Knight' : 'Queen'} wins!`;
     }
     if (isDraw) {
       return "It's a draw!";
     }
-    return `Player ${currentPlayer}'s turn`;
+    return `Player ${currentPlayer === 'X' ? 'Knight' : 'Queen'}'s turn`;
   }, [winner, isDraw, currentPlayer]);
 
   return (
@@ -163,8 +182,8 @@ function App() {
             Restart Game
           </button>
           <div className="legend">
-            <span className="pill x-pill" aria-label="Player X color">X</span>
-            <span className="pill o-pill" aria-label="Player O color">O</span>
+            <span className="pill x-pill" aria-label="Player Knight color">♞</span>
+            <span className="pill o-pill" aria-label="Player Queen color">♛</span>
           </div>
         </footer>
       </div>

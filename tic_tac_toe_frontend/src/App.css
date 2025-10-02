@@ -112,9 +112,10 @@ html, body, #root {
   background: linear-gradient(180deg, #ffffff, #f7f9fb);
   border: 1px solid var(--ocean-border);
   border-radius: var(--radius-sm);
-  font-size: clamp(28px, 5vw, 42px);
+  /* Use a bit larger base to make chess icons crisp */
+  font-size: clamp(34px, 5.6vw, 50px);
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   color: var(--ocean-text);
   cursor: pointer;
   display: grid;
@@ -129,6 +130,20 @@ html, body, #root {
 }
 .ttt-square:active {
   transform: translateY(0px) scale(0.98);
+}
+
+/* Icon container to allow future SVG sizing if needed */
+.ttt-square-icon {
+  line-height: 1;
+  transform: translateY(1px); /* subtle optical alignment */
+}
+
+/* Slight color cues per player that harmonize with theme */
+.ttt-square.x-icon .ttt-square-icon {
+  color: var(--ocean-primary);
+}
+.ttt-square.o-icon .ttt-square-icon {
+  color: var(--ocean-secondary);
 }
 
 .ttt-square[data-highlight="true"] {

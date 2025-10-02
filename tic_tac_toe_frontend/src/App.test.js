@@ -10,10 +10,10 @@ test('renders title and restart button', () => {
 test('allows players to take turns and detect win/draw state basics', () => {
   render(<App />);
   const cells = screen.getAllByRole('button', { name: /Square/ });
-  // First click is X
+  // First click is Player Knight (X internally)
   fireEvent.click(cells[0]);
-  expect(cells[0]).toHaveTextContent('X');
-  // Second click is O
+  expect(cells[0]).toHaveTextContent('♞');
+  // Second click is Player Queen (O internally)
   fireEvent.click(cells[1]);
-  expect(cells[1]).toHaveTextContent('O');
+  expect(cells[1]).toHaveTextContent('♛');
 });
