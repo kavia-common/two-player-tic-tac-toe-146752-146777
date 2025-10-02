@@ -1,104 +1,197 @@
-/* CSS Variables for Theme Management */
 :root {
-  /* Light theme colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #282c34;
-  --text-secondary: #61dafb;
-  --border-color: #e9ecef;
-  --button-bg: #007bff;
-  --button-text: #ffffff;
+  --ocean-primary: #2563EB;   /* blue */
+  --ocean-secondary: #F59E0B; /* amber */
+  --ocean-success: #F59E0B;
+  --ocean-error: #EF4444;
+  --ocean-bg: #f9fafb;
+  --ocean-surface: #ffffff;
+  --ocean-text: #111827;
+  --ocean-muted: #6B7280;
+  --ocean-border: #E5E7EB;
+  --shadow-soft: 0 10px 25px rgba(17, 24, 39, 0.08);
+  --radius: 16px;
+  --radius-sm: 12px;
+  --radius-xs: 10px;
+  --transition: 220ms cubic-bezier(.2,.8,.2,1);
 }
 
-[data-theme="dark"] {
-  /* Dark theme colors */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #282c34;
-  --text-primary: #ffffff;
-  --text-secondary: #61dafb;
-  --border-color: #404040;
-  --button-bg: #0056b3;
-  --button-text: #ffffff;
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  background: var(--ocean-bg);
+  color: var(--ocean-text);
 }
 
-.App {
-  text-align: center;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
+.ocean-app {
+  min-height: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
-.App-logo {
-  height: 40vmin;
+.ocean-gradient {
+  position: absolute;
+  inset: 0;
   pointer-events: none;
+  background: radial-gradient(1200px 600px at 10% 0%, rgba(37, 99, 235, 0.08), rgba(0,0,0,0) 60%),
+              radial-gradient(900px 500px at 90% 10%, rgba(245, 158, 11, 0.08), rgba(0,0,0,0) 60%);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: var(--bg-secondary);
-  min-height: 100vh;
+.ocean-container {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 16px 64px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: var(--text-primary);
-  transition: background-color 0.3s ease;
-  position: relative;
+  gap: 24px;
 }
 
-.App-link {
-  color: var(--text-secondary);
-  transition: color 0.3s ease;
+.ocean-header {
+  text-align: center;
 }
 
-.theme-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: var(--button-bg);
-  color: var(--button-text);
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.ocean-title {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 40px);
+  letter-spacing: -0.02em;
+  background: linear-gradient(120deg, var(--ocean-text), #3B82F6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-.theme-toggle:hover {
+.ocean-status {
+  margin-top: 8px;
+  font-size: 16px;
+  color: var(--ocean-muted);
+  transition: color var(--transition), transform var(--transition);
+}
+.ocean-status.turn { color: var(--ocean-muted); }
+.ocean-status.win { color: var(--ocean-secondary); }
+.ocean-status.draw { color: var(--ocean-text); }
+
+.ocean-main {
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.board-card {
+  background: var(--ocean-surface);
+  border: 1px solid var(--ocean-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.board-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  opacity: 0.9;
+  box-shadow: 0 14px 30px rgba(17, 24, 39, 0.1);
 }
 
-.theme-toggle:active {
-  transform: translateY(0);
+.ttt-board {
+  display: grid;
+  gap: 8px;
+}
+.ttt-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.ttt-cell {
+  width: clamp(80px, 12vw, 110px);
+  height: clamp(80px, 12vw, 110px);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.ttt-square {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #ffffff, #f7f9fb);
+  border: 1px solid var(--ocean-border);
+  border-radius: var(--radius-sm);
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--ocean-text);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  user-select: none;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition);
+  box-shadow: 0 4px 10px rgba(17, 24, 39, 0.06);
+}
+.ttt-square:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px rgba(17, 24, 39, 0.08);
+}
+.ttt-square:active {
+  transform: translateY(0px) scale(0.98);
 }
 
-/* Responsive design for mobile */
-@media (max-width: 768px) {
-  .theme-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    font-size: 12px;
-  }
+.ttt-square[data-highlight="true"] {
+  border-color: var(--ocean-secondary);
+  box-shadow: 0 8px 22px rgba(245, 158, 11, 0.25);
+  background: linear-gradient(180deg, #fff9ed, #fff7e6);
+}
+
+.ocean-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.ocean-btn {
+  position: relative;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition), color var(--transition);
+  box-shadow: var(--shadow-soft);
+}
+.ocean-btn.primary {
+  background: linear-gradient(135deg, #1d4ed8, var(--ocean-primary));
+  color: white;
+}
+.ocean-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px rgba(37, 99, 235, 0.3);
+}
+.ocean-btn.primary:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+.legend {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  background: var(--ocean-surface);
+  border: 1px solid var(--ocean-border);
+  border-radius: 999px;
+  padding: 8px 12px;
+}
+.pill {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 14px;
+  color: white;
+  user-select: none;
+}
+.x-pill { background: var(--ocean-primary); }
+.o-pill { background: var(--ocean-secondary); }
+
+@media (max-width: 480px) {
+  .ocean-container { padding: 32px 12px 48px; }
+  .board-card { padding: 16px; }
+  .ocean-actions { gap: 12px; flex-direction: column; }
 }
